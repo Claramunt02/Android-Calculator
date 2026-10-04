@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
     private double accumulator = 0;
     private boolean hasAccumulator = false;
     private String pendingOp = null;
+    private boolean replaceOnNextDigit = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
         setupDigitButtons();
         setupOperatorButtons();
+        setupTrigButtons();
     }
 
     private void setupDigitButtons() {
@@ -56,7 +58,17 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btnClear).setOnClickListener(v -> onClear());
     }
 
+    private void setupTrigButtons() {
+        findViewById(R.id.btnSin).setOnClickListener(v -> onTrig("sin"));
+        findViewById(R.id.btnCos).setOnClickListener(v -> onTrig("cos"));
+        findViewById(R.id.btnTan).setOnClickListener(v -> onTrig("tan"));
+    }
+
     private void appendText(String t) {
+        if (replaceOnNextDigit) {
+            currentInput = "";
+            replaceOnNextDigit = false;
+        }
         if (pendingOp == null && currentInput.isEmpty()) {
             hasAccumulator = false;
         }
@@ -82,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
                 hasAccumulator = true;
             }
             currentInput = "";
+            replaceOnNextDigit = false;
         } else if (!hasAccumulator) {
             return;
         }
@@ -95,7 +108,47 @@ public class MainActivity extends AppCompatActivity {
         if (!applyPending(value)) return;
         pendingOp = null;
         currentInput = "";
+        replaceOnNextDigit = false;
         tvDisplay.setText(format(accumulator));
+    }
+
+    private void onTrig(String fn) {
+        double value;
+        boolean fromInput = !currentInput.isEmpty();
+        if (fromInput) {
+            value = Double.parseDouble(currentInput);
+        } else if (hasAccumulator && pendingOp == null) {
+            value = accumulator;
+        } else {
+            return;
+        }
+
+        double angle = swRadians.isChecked() ? value : Math.toRadians(value);
+        double result;
+        switch (fn) {
+            case "sin":
+                result = Math.sin(angle);
+                break;
+            case "cos":
+                result = Math.cos(angle);
+                break;
+            default:
+                if (Math.abs(Math.cos(angle)) < 1e-12) {
+                    showError();
+                    return;
+                }
+                result = Math.tan(angle);
+                break;
+        }
+        result = Math.round(result * 1e10) / 1e10;
+
+        if (fromInput) {
+            currentInput = format(result);
+            replaceOnNextDigit = true;
+        } else {
+            accumulator = result;
+        }
+        tvDisplay.setText(format(result));
     }
 
     private boolean applyPending(double value) {
@@ -119,14 +172,12 @@ public class MainActivity extends AppCompatActivity {
         accumulator = 0;
         hasAccumulator = false;
         pendingOp = null;
+        replaceOnNextDigit = false;
         tvDisplay.setText("0");
     }
 
     private void showError() {
-        currentInput = "";
-        accumulator = 0;
-        hasAccumulator = false;
-        pendingOp = null;
+        onClear();
         tvDisplay.setText("Error");
     }
 
