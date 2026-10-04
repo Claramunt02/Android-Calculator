@@ -12,58 +12,173 @@
         android:layout_width="0dp"
         android:layout_height="100dp"
         android:gravity="end|center_vertical"
+        android:maxLines="1"
         android:text="0"
         android:textSize="40sp"
-        android:maxLines="1"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/swRadians"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Radianes (apagado = grados)"
-        app:layout_constraintTop_toBottomOf="@id/tvDisplay"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvDisplay" />
 
     <androidx.constraintlayout.helper.widget.Flow
         android:id="@+id/flowButtons"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:constraint_referenced_ids="btnSin,btnCos,btnTan,btnClear,btn7,btn8,btn9,btnDiv,btn4,btn5,btn6,btnMul,btn1,btn2,btn3,btnSub,btn0,btnDot,btnEq,btnAdd"
-        app:flow_wrapMode="aligned"
-        app:flow_maxElementsWrap="4"
         app:flow_horizontalGap="8dp"
+        app:flow_maxElementsWrap="4"
         app:flow_verticalGap="8dp"
-        app:layout_constraintTop_toBottomOf="@id/swRadians"
+        app:flow_wrapMode="aligned"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/swRadians" />
 
-    <Button android:id="@+id/btnSin" android:layout_width="0dp" android:layout_height="64dp" android:text="sin" />
-    <Button android:id="@+id/btnCos" android:layout_width="0dp" android:layout_height="64dp" android:text="cos" />
-    <Button android:id="@+id/btnTan" android:layout_width="0dp" android:layout_height="64dp" android:text="tan" />
-    <Button android:id="@+id/btnClear" android:layout_width="0dp" android:layout_height="64dp" android:text="C" />
+    <Button
+        android:id="@+id/btnSin"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:onClick="ClickBtSin"
+        android:text="sin" />
 
-    <Button android:id="@+id/btn7" android:layout_width="0dp" android:layout_height="64dp" android:text="7" />
-    <Button android:id="@+id/btn8" android:layout_width="0dp" android:layout_height="64dp" android:text="8" />
-    <Button android:id="@+id/btn9" android:layout_width="0dp" android:layout_height="64dp" android:text="9" />
-    <Button android:id="@+id/btnDiv" android:layout_width="0dp" android:layout_height="64dp" android:text="÷" />
+    <Button
+        android:id="@+id/btnCos"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:onClick="ClickBtCos"
+        android:text="cos" />
 
-    <Button android:id="@+id/btn4" android:layout_width="0dp" android:layout_height="64dp" android:text="4" />
-    <Button android:id="@+id/btn5" android:layout_width="0dp" android:layout_height="64dp" android:text="5" />
-    <Button android:id="@+id/btn6" android:layout_width="0dp" android:layout_height="64dp" android:text="6" />
-    <Button android:id="@+id/btnMul" android:layout_width="0dp" android:layout_height="64dp" android:text="×" />
+    <Button
+        android:id="@+id/btnTan"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:onClick="ClickBtTan"
+        android:text="tan" />
 
-    <Button android:id="@+id/btn1" android:layout_width="0dp" android:layout_height="64dp" android:text="1" />
-    <Button android:id="@+id/btn2" android:layout_width="0dp" android:layout_height="64dp" android:text="2" />
-    <Button android:id="@+id/btn3" android:layout_width="0dp" android:layout_height="64dp" android:text="3" />
-    <Button android:id="@+id/btnSub" android:layout_width="0dp" android:layout_height="64dp" android:text="−" />
+    <Button
+        android:id="@+id/btnClear"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:onClick="ClickBtAC"
+        android:text="C" />
 
-    <Button android:id="@+id/btn0" android:layout_width="0dp" android:layout_height="64dp" android:text="0" />
-    <Button android:id="@+id/btnDot" android:layout_width="0dp" android:layout_height="64dp" android:text="." />
-    <Button android:id="@+id/btnEq" android:layout_width="0dp" android:layout_height="64dp" android:text="=" />
-    <Button android:id="@+id/btnAdd" android:layout_width="0dp" android:layout_height="64dp" android:text="+" />
+    <Button
+        android:id="@+id/btn7"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:onClick="ClickBtNum"
+        android:text="7" />
+
+    <Button
+        android:id="@+id/btn8"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:onClick="ClickBtNum"
+        android:text="8" />
+
+    <Button
+        android:id="@+id/btn9"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:onClick="ClickBtNum"
+        android:text="9" />
+
+    <Button
+        android:id="@+id/btnDiv"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:onClick="ClickBtDiv"
+        android:text="÷" />
+
+    <Button
+        android:id="@+id/btn4"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:onClick="ClickBtNum"
+        android:text="4" />
+
+    <Button
+        android:id="@+id/btn5"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:onClick="ClickBtNum"
+        android:text="5" />
+
+    <Button
+        android:id="@+id/btn6"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:onClick="ClickBtNum"
+        android:text="6" />
+
+    <Button
+        android:id="@+id/btnMul"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:onClick="ClickBtMultip"
+        android:text="×" />
+
+    <Button
+        android:id="@+id/btn1"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:onClick="ClickBtNum"
+        android:text="1" />
+
+    <Button
+        android:id="@+id/btn2"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:onClick="ClickBtNum"
+        android:text="2" />
+
+    <Button
+        android:id="@+id/btn3"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:onClick="ClickBtNum"
+        android:text="3" />
+
+    <Button
+        android:id="@+id/btnSub"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:onClick="ClickBtSubs"
+        android:text="−" />
+
+    <Button
+        android:id="@+id/btn0"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:onClick="ClickBtNum"
+        android:text="0" />
+
+    <Button
+        android:id="@+id/btnDot"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:onClick="ClickBtNum"
+        android:text="." />
+
+    <Button
+        android:id="@+id/btnEq"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:onClick="ClickBtIgual"
+        android:text="=" />
+
+    <Button
+        android:id="@+id/btnAdd"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:onClick="ClickBtSum"
+        android:text="+" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
