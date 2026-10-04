@@ -12,7 +12,11 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView tvDisplay;
     private SwitchCompat swRadians;
+
     private String currentInput = "";
+    private double accumulator = 0;
+    private boolean hasAccumulator = false;
+    private String pendingOp = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
         swRadians = findViewById(R.id.swRadians);
 
         setupDigitButtons();
+        setupOperatorButtons();
     }
 
     private void setupDigitButtons() {
@@ -42,7 +47,19 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void setupOperatorButtons() {
+        findViewById(R.id.btnAdd).setOnClickListener(v -> onOperator("+"));
+        findViewById(R.id.btnSub).setOnClickListener(v -> onOperator("-"));
+        findViewById(R.id.btnMul).setOnClickListener(v -> onOperator("*"));
+        findViewById(R.id.btnDiv).setOnClickListener(v -> onOperator("/"));
+        findViewById(R.id.btnEq).setOnClickListener(v -> onEquals());
+        findViewById(R.id.btnClear).setOnClickListener(v -> onClear());
+    }
+
     private void appendText(String t) {
+        if (pendingOp == null && currentInput.isEmpty()) {
+            hasAccumulator = false;
+        }
         if (t.equals(".")) {
             if (currentInput.contains(".")) return;
             if (currentInput.isEmpty()) currentInput = "0";
@@ -53,5 +70,70 @@ public class MainActivity extends AppCompatActivity {
             currentInput += t;
         }
         tvDisplay.setText(currentInput);
+    }
+
+    private void onOperator(String op) {
+        if (!currentInput.isEmpty()) {
+            double value = Double.parseDouble(currentInput);
+            if (pendingOp != null && hasAccumulator) {
+                if (!applyPending(value)) return;
+            } else {
+                accumulator = value;
+                hasAccumulator = true;
+            }
+            currentInput = "";
+        } else if (!hasAccumulator) {
+            return;
+        }
+        pendingOp = op;
+        tvDisplay.setText(format(accumulator));
+    }
+
+    private void onEquals() {
+        if (pendingOp == null || currentInput.isEmpty()) return;
+        double value = Double.parseDouble(currentInput);
+        if (!applyPending(value)) return;
+        pendingOp = null;
+        currentInput = "";
+        tvDisplay.setText(format(accumulator));
+    }
+
+    private boolean applyPending(double value) {
+        switch (pendingOp) {
+            case "+": accumulator += value; break;
+            case "-": accumulator -= value; break;
+            case "*": accumulator *= value; break;
+            case "/":
+                if (value == 0) {
+                    showError();
+                    return false;
+                }
+                accumulator /= value;
+                break;
+        }
+        return true;
+    }
+
+    private void onClear() {
+        currentInput = "";
+        accumulator = 0;
+        hasAccumulator = false;
+        pendingOp = null;
+        tvDisplay.setText("0");
+    }
+
+    private void showError() {
+        currentInput = "";
+        accumulator = 0;
+        hasAccumulator = false;
+        pendingOp = null;
+        tvDisplay.setText("Error");
+    }
+
+    private String format(double value) {
+        if (value == Math.rint(value) && Math.abs(value) < 1e15) {
+            return String.valueOf((long) value);
+        }
+        return String.valueOf(value);
     }
 }
